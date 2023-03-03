@@ -10,29 +10,26 @@ register = template.Library()
 def draw_menu(context, menu_name):
     current_url: str = context['request'].path
     clear_curent = current_url.replace("/", "")
-    menu_items = MenuItem.objects.all()
-    menu_dict = {}
-    html_code = style
-    for item in menu_items:
-         menu_dict[item.id] = {
-             'name': item.name,
-             'url': item.url,
-             'parent': item.parent_id,
-             'children': [],
-             'is_active': item.url == clear_curent
-         }
-         if item.parent_id:
-             menu_dict[item.parent_id]['children'].append(menu_dict[item.id])
-    for i in menu_dict.values():
-        active = "-active" if i["is_active"] else ""
-        html_code += f'<div class="dropdown">'
-        html_code += f'<button class="dropbtn{active}">{i["name"]}</button>'
+    if current_url == "/":
+        menu_items = MenuItem.objects.select_related("parent")
+    else:
+        menu_items = MenuItem.objects.filter(url=clear_curent).select_related("parent")
 
-        if i["children"]:
-            html_code += f'<div class="dropdown-content{active}">'
-            for n in i["children"]:
-                html_code += f'<a href="{n["url"]}">{n["name"]}</a>'
+    def is_active(item):
+        return item.url == clear_curent
+
+    def render_menu(menu_items):
+        html_code = style
+        for item in menu_items:
+            is_item_act = "-active" if is_active(item) else ""
+            has_child = item.children.exists()
+            sub_menu = render_menu(item.children.all()) if has_child else ""
+            html_code += f'<div class="dropdown">'
+            html_code += f'<button class="dropbtn{is_item_act}">{item.name}</button>'
+            html_code += f'<div class="dropdown-content{is_item_act}">'
+            html_code += sub_menu
             html_code += '</div>'
-        html_code += '</div>'
+            html_code += '</div>'
+        return html_code
 
-    return mark_safe(html_code)
+    return mark_safe(render_menu(menu_items))
