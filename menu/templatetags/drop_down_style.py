@@ -46,12 +46,12 @@ style = """
   color: black;
   padding: 12px 16px;
   text-decoration: none;
-  display: block;
+  display: inline;
 }
 /* Изменение цвета выпадающих ссылок при наведении курсора */
 .dropdown-content a:hover {background-color: #ddd;}
 /* Показать выпадающее меню при наведении курсора */
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {display: inline;}
 
 /* Изменение цвета фона кнопки раскрывающегося списка при отображении содержимого раскрывающегося списка */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
