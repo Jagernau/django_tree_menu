@@ -1,6 +1,5 @@
 from django import template
 from menu.models import MenuItem
-from .drop_down_style import style
 from django.utils.safestring import mark_safe
 
 
@@ -19,7 +18,7 @@ def draw_menu(context, menu_name):
         return item.url == clear_curent
 
     def render_menu(menu_items):
-        html_code = style
+        html_code = ""
         for item in menu_items:
             is_item_act = "-active" if is_active(item) else ""
             has_child = item.children.exists()
@@ -28,7 +27,7 @@ def draw_menu(context, menu_name):
             html_code += f'<button class="dropbtn{is_item_act}">{item.name}</button>'
             html_code += f'<div class="dropdown-content{is_item_act}">'
             if has_child:
-                html_code += sub_menu.replace('<div class="dropdown">', '<div class="sub_dropdown">').replace('<button class="dropbtn', '<button class="sub_dropbtn').replace('<div class="dropdown-content', '<div class="sub_dropdown-content')
+                html_code += sub_menu
             html_code += '</div>'
             html_code += '</div>'
         return html_code
