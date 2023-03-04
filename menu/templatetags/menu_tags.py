@@ -27,7 +27,8 @@ def draw_menu(context, menu_name):
             html_code += f'<div class="dropdown">'
             html_code += f'<button class="dropbtn{is_item_act}">{item.name}</button>'
             html_code += f'<div class="dropdown-content{is_item_act}">'
-            html_code += sub_menu
+            if has_child:
+                html_code += sub_menu.replace('<div class="dropdown">', '<div class="sub_dropdown">').replace('<button class="dropbtn', '<button class="sub_dropbtn').replace('<div class="dropdown-content', '<div class="sub_dropdown-content')
             html_code += '</div>'
             html_code += '</div>'
         return html_code
