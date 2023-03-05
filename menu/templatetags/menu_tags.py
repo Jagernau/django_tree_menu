@@ -8,14 +8,15 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def draw_menu(context, menu_name):
     current_url: str = context['request'].path
-    clear_curent = current_url.replace("/", "")
+
+    clear_curent = current_url.split("/")
     if current_url == "/":
-        menu_items = MenuItem.objects.select_related("parent")
+        menu_items = MenuItem.objects.select_related("parent")        
     else:
-        menu_items = MenuItem.objects.filter(url=clear_curent).select_related("parent")
+        menu_items = MenuItem.objects.filter(url=clear_curent[-2]).select_related("parent")
 
     def is_active(item):
-        return item.url == clear_curent
+        return item.url == clear_curent[-2]
 
     def render_menu(menu_items):
         html_code = ""
@@ -32,5 +33,4 @@ def draw_menu(context, menu_name):
             html_code += '</div>'
 
         return html_code
-
     return mark_safe(render_menu(menu_items))
