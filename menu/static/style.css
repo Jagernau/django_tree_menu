@@ -13,12 +13,20 @@
   font-size: 16px;
   border: none;
 }
+.dropbtn::after {
+  content: '\2192'; /* Unicode right arrow symbol */
+  margin-left: 0.5em;
+}
 .dropbtn-active{
-  background-color: rosybrown;
+  background-color: red;
   color: white;
   padding: 6px 36px;
   font-size: 16px;
   border: none;
+}
+.dropbtn-active::after {
+  content: "\2193"; /* Unicode right arrow symbol */
+  margin-left: 0.5em;
 }
 
 /* Выпадающее содержимое (скрыто по умолчанию) */
