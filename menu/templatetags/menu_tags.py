@@ -24,12 +24,13 @@ def draw_menu(context, menu_name):
             has_child = item.children.exists()
             sub_menu = render_menu(item.children.all()) if has_child else ""
             html_code += f'<div class="dropdown">'
-            html_code += f'<button class="dropbtn{is_item_act}">{item.name}</button>'
-            html_code += f'<div class="dropdown-content{is_item_act}">'
+            html_code += f'<button class="dropbtn{is_item_act}"><a href="{item.url}">{item.name}</a></button>'
             if has_child:
+                html_code += f'<div class="dropdown-content{is_item_act}">'
                 html_code += sub_menu
+                html_code += '</div>'
             html_code += '</div>'
-            html_code += '</div>'
+
         return html_code
 
     return mark_safe(render_menu(menu_items))
